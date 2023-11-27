@@ -2,36 +2,48 @@
 
 import { FileDropArea } from "@/components/FileDropArea";
 import Docxtemplater from "docxtemplater";
+import InspectModule from "docxtemplater/js/inspect-module";
 import { saveAs } from "file-saver";
 import PizZip from "pizzip";
+import { useState } from "react";
 
-const generateDocument = async (file: File) => {
+const getTags = async (file: File) => {
   const binaryFile = await file.arrayBuffer();
   const zip = new PizZip(binaryFile);
+  const iModule = new InspectModule();
+
+  // Create Docxtemplater instance with delimiters
+  new Docxtemplater(zip, {
+    delimiters: { start: "{{", end: "}}" },
+    modules: [iModule],
+  });
+
+  // Get all placeholder tags
+  const tags = iModule.getAllTags();
+  console.log(tags);
+  return tags;
+};
+
+const generateDocument = async (
+  file: File | undefined,
+  tags: Record<string, unknown>
+) => {
+  if (!file) return;
+
+  const binaryFile = await file.arrayBuffer();
+  const zip = new PizZip(binaryFile);
+  const iModule = new InspectModule();
 
   // Create Docxtemplater instance
   const doc = new Docxtemplater(zip, {
     delimiters: { start: "{{", end: "}}" },
+    modules: [iModule],
   });
 
   // Render document (replace all occurences of {{ XXX }}
-  doc.render({
-    company_firstname: "Hipp",
-    company_lastname: "Edgar",
-    employee_firstname: "Peter",
-    employee_lastname: "Lustig",
-    employee_address: "Sonnenalle 54, 12345 Berlin",
-    employee_jobtitle_de: "Senior Software Engineer",
-    employee_description_de: "Tut Dinge...",
-    employee_jobtitle_en: "Senior Software Engineer",
-    employee_description_en: "Doing things...",
-    salary_annually: "100.000 EUR",
-    salary_monthly: "8.000 EUR",
-    holiday: "28",
-    start_date: "1.1.2024",
-    city_signature: "Berlin",
-    date_signature: "1.2.2023",
-  });
+
+  console.log(tags);
+  doc.render(tags);
 
   // Export document
   const blob = doc.getZip().generate({
@@ -44,6 +56,20 @@ const generateDocument = async (file: File) => {
 };
 
 export default function Home() {
+  const [tags, setTags] = useState<Record<string, unknown>>({});
+  const [file, setFile] = useState<File>();
+
+  const scanDocumentForTags = async (file: File) => {
+    const tags = await getTags(file);
+    setTags(tags);
+    setFile(file);
+  };
+
+  const setTagValue = (e) => {
+    const { id, value } = e.target;
+    setTags((tags) => ({ ...tags, [id]: value }));
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
@@ -53,12 +79,52 @@ export default function Home() {
               Docxtemplater Demo
             </span>
           </h1>
-          <div className="mt-12 text-center">
+          <div className="mt-12">
             <FileDropArea
-              onFileAccepted={generateDocument}
+              onFileAccepted={scanDocumentForTags}
               maxFileSizeMB={10}
             />
           </div>
+
+          {tags && Object.keys(tags).length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-center">
+                <span className="block text-3xl font-bold leading-none">
+                  Placeholder Tags
+                </span>
+              </h2>
+              <div className="mt-8">
+                <ul className="list-disc list-inside">
+                  {Object.keys(tags).map((tag) => (
+                    <div key={tag} className="mt-4">
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium leading-6"
+                      >
+                        {tag}
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id={tag}
+                          className="block w-full rounded-md border-0 py-1.5 px-2 dark:bg-black text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          placeholder={tag}
+                          onChange={setTagValue}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-8">
+                <button
+                  onClick={() => generateDocument(file, tags)}
+                  className="inline-block bg-gray-900 dark:bg-white hover:bg-gray-800 text-white dark:text-black dark:hover:bg-gray-100 font-medium rounded-lg px-6 py-4 leading-tight"
+                >
+                  Generate document
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </main>
