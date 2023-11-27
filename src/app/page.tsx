@@ -5,7 +5,7 @@ import Docxtemplater from "docxtemplater";
 import InspectModule from "docxtemplater/js/inspect-module";
 import { saveAs } from "file-saver";
 import PizZip from "pizzip";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 const getTags = async (file: File) => {
   const binaryFile = await file.arrayBuffer();
@@ -41,8 +41,6 @@ const generateDocument = async (
   });
 
   // Render document (replace all occurences of {{ XXX }}
-
-  console.log(tags);
   doc.render(tags);
 
   // Export document
@@ -65,8 +63,8 @@ export default function Home() {
     setFile(file);
   };
 
-  const setTagValue = (e) => {
-    const { id, value } = e.target;
+  const setTagValue = (event: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = event.target;
     setTags((tags) => ({ ...tags, [id]: value }));
   };
 
