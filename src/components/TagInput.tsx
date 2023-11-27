@@ -1,5 +1,3 @@
-import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
-
 interface TagInput {
   tag: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -18,12 +16,6 @@ export function TagInput({ tag, onChange }: TagInput) {
           placeholder={tag}
           onChange={onChange}
         />
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-          <ExclamationCircleIcon
-            className="h-5 w-5 text-red-500"
-            aria-hidden="true"
-          />
-        </div>
       </div>
     </div>
   );
