@@ -14,6 +14,7 @@
     "@types/ramda": "^0.29.9",
     "docxtemplater": "^3.42.2",
     "file-saver": "^2.0.5",
+    "lodash": "^4.17.21",
     "next": "14.0.3",
     "pizzip": "^3.1.4",
     "ramda": "^0.29.1",
