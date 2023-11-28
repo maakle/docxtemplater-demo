@@ -1,5 +1,6 @@
 "use client";
 
+import { showErrorToast } from "@/components/ErrorToast";
 import { FileDropArea } from "@/components/FileDropArea";
 import { TagInput } from "@/components/TagInput";
 import { generateDocument, getTags } from "@/lib/docxtemplater";
@@ -31,7 +32,9 @@ export default function Home() {
     }
 
     if (missingValue.length > 0) {
-      alert(`Please fill in the following tags: ${missingValue.join(", ")}`);
+      showErrorToast(
+        `Please fill in the following tags: ${missingValue.join(", ")}`
+      );
       return;
     }
 

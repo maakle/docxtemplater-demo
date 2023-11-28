@@ -16,7 +16,6 @@ export const getTags = async (file: File) => {
 
   // Get all placeholder tags
   const tags = iModule.getAllTags();
-  console.log(tags);
   return tags;
 };
 
