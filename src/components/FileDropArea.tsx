@@ -68,8 +68,8 @@ export function FileDropArea({
         >
           <div
             className={twMerge(
-              "relative overflow-hidden flex flex-col items-center justify-center w-full py-4 border rounded cursor-pointer",
-              "bg-stone-100 dark:hover:bg-bray-800 dark:bg-neutral-900 hover:bg-stone-100 dark:border-zinc-800 dark:hover:bg-neutral-800",
+              "relative overflow-hidden flex flex-col items-center justify-center w-full py-4 border rounded-md cursor-pointer",
+              "bg-white dark:hover:bg-bray-800 dark:bg-neutral-900 hover:bg-stone-50 dark:border-zinc-800 dark:hover:bg-neutral-800",
               invalid && "border-rose-600 dark:border-rose-500"
             )}
           >

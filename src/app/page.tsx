@@ -2,57 +2,8 @@
 
 import { FileDropArea } from "@/components/FileDropArea";
 import { TagInput } from "@/components/TagInput";
-import Docxtemplater from "docxtemplater";
-import InspectModule from "docxtemplater/js/inspect-module";
-import { saveAs } from "file-saver";
-import PizZip from "pizzip";
+import { generateDocument, getTags } from "@/lib/docxtemplater";
 import { ChangeEvent, useState } from "react";
-
-const getTags = async (file: File) => {
-  const binaryFile = await file.arrayBuffer();
-  const zip = new PizZip(binaryFile);
-  const iModule = new InspectModule();
-
-  // Create Docxtemplater instance with delimiters
-  new Docxtemplater(zip, {
-    delimiters: { start: "{{", end: "}}" },
-    modules: [iModule],
-  });
-
-  // Get all placeholder tags
-  const tags = iModule.getAllTags();
-  console.log(tags);
-  return tags;
-};
-
-const generateDocument = async (
-  file: File | undefined,
-  tags: Record<string, unknown>
-) => {
-  if (!file) return;
-
-  const binaryFile = await file.arrayBuffer();
-  const zip = new PizZip(binaryFile);
-  const iModule = new InspectModule();
-
-  // Create Docxtemplater instance
-  const doc = new Docxtemplater(zip, {
-    delimiters: { start: "{{", end: "}}" },
-    modules: [iModule],
-  });
-
-  // Render document (replace all occurences of {{ XXX }}
-  doc.render(tags);
-
-  // Export document
-  const blob = doc.getZip().generate({
-    type: "blob",
-    mimeType:
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  });
-
-  saveAs(blob, "output.docx");
-};
 
 export default function Home() {
   const [tags, setTags] = useState<Record<string, unknown>>({});
@@ -70,7 +21,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex bg-stone-100 dark:bg-zinc-900 min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <div className="mt-8 max-w-xl mx-auto px-8">
           <h1 className="text-center">
