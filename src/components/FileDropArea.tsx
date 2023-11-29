@@ -10,6 +10,7 @@ const acceptOptions = {
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [
     ".docx",
   ],
+  // "application/pdf": [".pdf"],
 };
 
 export enum ErrorCode {
@@ -87,7 +88,7 @@ export function FileDropArea({
                 <UploadIcon className="h-5 w-5 self-center text-stone-500 dark:text-stone-400" />
                 <div>
                   <p className="mb-1 text-xs text-stone-500 dark:text-stone-400">
-                    Drop files here
+                    Drop your file here
                   </p>
                   <p className="text-xs text-stone-500 dark:text-stone-400">
                     Maximum 10 mb
