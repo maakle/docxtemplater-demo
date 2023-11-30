@@ -85,7 +85,7 @@ export default function Home() {
                   </span>
                 </h2>
                 <div className="mt-8">
-                  <div className="grid grid-cols-2 gap-8">
+                  <div className="grid grid-cols-2 gap-10">
                     <div>
                       <ul className="list-disc list-inside">
                         {Object.keys(tags).map((tag) => (
@@ -105,8 +105,8 @@ export default function Home() {
                             className="mt-8"
                             id="preview"
                             style={{
-                              height: "800px",
-                              width: "600px",
+                              height: "1000px",
+                              width: "800px",
                               overflowY: "auto",
                             }}
                           />
