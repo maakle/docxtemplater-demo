@@ -19,7 +19,7 @@ export const getTags = async (file: File) => {
   return tags;
 };
 
-export const generateDocument = async (
+export const createDocxWithTags = async (
   file: File | undefined,
   tags: Record<string, unknown>
 ) => {
