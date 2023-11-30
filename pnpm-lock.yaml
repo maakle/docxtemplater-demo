@@ -32,9 +32,6 @@ dependencies:
   pizzip:
     specifier: ^3.1.4
     version: 3.1.4
-  pspdfkit:
-    specifier: ^2023.5.2
-    version: 2023.5.2
   ramda:
     specifier: ^0.29.1
     version: 0.29.1
@@ -2220,10 +2217,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-
-  /pspdfkit@2023.5.2:
-    resolution: {integrity: sha512-mB+mQIMcRd+PIOwju7553OG0pomUdAgHRuPflUpXa5Dd5twVmqiusgffxZ4HNggMm15+Rng244XEOn7jBoXyag==}
-    dev: false
 
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
