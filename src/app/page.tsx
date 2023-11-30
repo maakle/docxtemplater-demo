@@ -46,6 +46,11 @@ export default function Home() {
     }
   };
 
+  const resetFile = () => {
+    setFile(undefined);
+    setTags({});
+  };
+
   return (
     <main className="flex bg-stone-100 dark:bg-zinc-900 min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full items-center justify-between font-mono text-sm lg:flex">
@@ -61,10 +66,21 @@ export default function Home() {
             </span>
           </h2>
           <div className="flex justify-center mt-12">
-            <FileDropArea
-              onFileAccepted={scanDocumentForTags}
-              maxFileSizeMB={10}
-            />
+            {file ? (
+              <button
+                className="inline-block border bg-white dark:bg-black hover:bg-stone-100 text-black dark:text-white dark:hover:bg-gray-900 font-medium rounded-lg px-6 py-4 leading-tight"
+                onClick={resetFile}
+              >
+                Reset File
+              </button>
+            ) : (
+              <div className="w-96">
+                <FileDropArea
+                  onFileAccepted={scanDocumentForTags}
+                  maxFileSizeMB={10}
+                />
+              </div>
+            )}
           </div>
 
           <div className="mt-12">
@@ -78,6 +94,7 @@ export default function Home() {
                 <div className="mt-8">
                   <div className="grid grid-cols-2 gap-10">
                     <div>
+                      <h3 className="font-bold">Replace tags</h3>
                       <ul className="list-disc list-inside">
                         {Object.keys(tags).map((tag) => (
                           <TagInput
