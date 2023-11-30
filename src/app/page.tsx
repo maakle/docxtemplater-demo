@@ -1,18 +1,16 @@
 "use client";
 
+import { DocxPreviewer } from "@/components/DocxPreviewer";
 import { showErrorToast } from "@/components/ErrorToast";
 import { FileDropArea } from "@/components/FileDropArea";
 import { TagInput } from "@/components/TagInput";
 import { createDocxWithTags, getTags } from "@/lib/docxtemplater";
-import * as docx from "docx-preview";
 import { isEmpty } from "ramda";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 export default function Home() {
   const [tags, setTags] = useState<Record<string, unknown>>({});
   const [file, setFile] = useState<File>();
-
-  const tagsExist = tags && Object.keys(tags).length > 0;
 
   const scanDocumentForTags = async (file: File) => {
     const newTags = await getTags(file);
@@ -48,13 +46,6 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    if (file) {
-      const container = document.getElementById("preview") as HTMLElement;
-      docx.renderAsync(file, container);
-    }
-  }, [file]);
-
   return (
     <main className="flex bg-stone-100 dark:bg-zinc-900 min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full items-center justify-between font-mono text-sm lg:flex">
@@ -77,7 +68,7 @@ export default function Home() {
           </div>
 
           <div className="mt-12">
-            {tagsExist && (
+            {tags && Object.keys(tags).length > 0 && (
               <>
                 <h2 className="text-center font-medium">
                   <span className="block text-3xl font-bold leading-none">
@@ -101,15 +92,7 @@ export default function Home() {
                       {file && (
                         <>
                           <h3 className="font-bold">Preview Document</h3>
-                          <div
-                            className="mt-8"
-                            id="preview"
-                            style={{
-                              height: "1000px",
-                              width: "800px",
-                              overflowY: "auto",
-                            }}
-                          />
+                          <DocxPreviewer file={file} />
                         </>
                       )}
                     </div>
